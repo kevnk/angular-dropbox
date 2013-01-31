@@ -1,8 +1,3 @@
- /**
-  * Original script from Dropbox; pulled Jan. 31, 2013
-  * @see: https://www.dropbox.com/static/api/1/dropbox.js
-  **/
-
 if (!window.Dropbox) window.Dropbox = {};
 Dropbox.baseUrl = "https://www.dropbox.com"; //Leave this here. :-)
 
