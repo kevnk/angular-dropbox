@@ -11,7 +11,7 @@
 
 3. See [Documentation for Dropbox Chooser](https://www.dropbox.com/developers/chooser) for more details.
 
-
+4. See the original dropbox script [in this repo](vendor/dropbox.js) or at [https://www.dropbox.com/static/api/1/dropbox.js](https://www.dropbox.com/static/api/1/dropbox.js)
 
 ### Known Issues
 
