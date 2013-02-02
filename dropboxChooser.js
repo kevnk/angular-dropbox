@@ -11,10 +11,10 @@ var dropboxChooser = angular.module('dropboxChooser', []);
  /**
   * dropboxChooser constant
   *
-  * @note: Replace 'API_KEY_GOES_HERE' with your Dropbox API
+  * @note: Add your API key in this constant
   * @author: Kevin Kirchner
   **/
-dropboxChooser.constant('DROPBOX_CONFIG', { BASE_URL: "https://www.dropbox.com", API_KEY: 'API_KEY_GOES_HERE' })
+dropboxChooser.constant('DROPBOX_CONFIG', { BASE_URL: "https://www.dropbox.com", API_KEY: 'bu9otnx7trxsblk' })
 
 
  /**
@@ -211,22 +211,13 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
         dropboxChooserService.choose({
           success: function(files) {
             el.value = files[0].url;
-            el.files = files;
+            $scope.files = files;
+            $scope.$broadcast('DbxChooserSuccess');
 
-            if( document.createEvent ) {
-              var evObj = document.createEvent('Event');
-              evObj.initEvent( 'DbxChooserSuccess', true, false );
-              evObj.files = files;
-              el.dispatchEvent( evObj );
-            }
             btn.className = "dropbox-chooser dropbox-chooser-used";
           },
           cancel: function() {
-            if( document.createEvent ) {
-              var event = document.createEvent("Event");
-              event.initEvent("DbxChooserCancel", true, true);
-              el.dispatchEvent(event);
-            }
+            $scope.$broadcast('DbxChooserCancel');
           },
           linkType: el.getAttribute('data-link-type') ? el.getAttribute('data-link-type') : 'preview',
           _trigger: 'button'  //log that this came from a button
@@ -245,5 +236,12 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
   * @author Kevin Kirchner
   **/
 dropboxChooser.controller('DropboxChooserCtrl', function($scope) {
+  $scope.$on('DbxChooserSuccess', function(){
+    console.log($scope.files);
+  })
+
+  $scope.$on('DbxChooserCancel', function(){
+    console.log('fail');
+  })
 
 });
