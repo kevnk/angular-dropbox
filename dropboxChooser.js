@@ -11,10 +11,10 @@ var dropboxChooser = angular.module('dropboxChooser', []);
  /**
   * dropboxChooser constant
   *
-  * @note: Add your API key in this constant
+  * @note: Replace 'API_KEY_GOES_HERE' with your Dropbox API
   * @author: Kevin Kirchner
   **/
-dropboxChooser.constant('DROPBOX_CONFIG', { BASE_URL: "https://www.dropbox.com", API_KEY: 'bu9otnx7trxsblk' })
+dropboxChooser.constant('DROPBOX_CONFIG', { BASE_URL: "https://www.dropbox.com", API_KEY: 'API_KEY_GOES_HERE' })
 
 
  /**
