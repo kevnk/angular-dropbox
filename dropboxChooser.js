@@ -1,29 +1,29 @@
 'use strict';
 
  /**
-  * dropboxChooser module
+  * dropboxChooserModule
   *
   * @author Kevin Kirchner
   **/
-var dropboxChooser = angular.module('dropboxChooser', []);
+var dropboxChooserModule = angular.module('dropboxChooserModule', []);
 
 
  /**
-  * dropboxChooser constant
+  * dropboxChooserModule constant
   *
   * @note: Add your API key in this constant
   * @author: Kevin Kirchner
   **/
-dropboxChooser.constant('DROPBOX_CONFIG', { BASE_URL: "https://www.dropbox.com", API_KEY: 'bu9otnx7trxsblk' })
+dropboxChooserModule.constant('DROPBOX_CONFIG', { BASE_URL: "https://www.dropbox.com", API_KEY: 'bu9otnx7trxsblk' })
 
 
  /**
-  * dropboxChooser service
+  * dropboxChooserModule service
   *
   * Access the dropboxChooserService from other controllers if you need to
   * @author Kevin Kirchner
   **/
-dropboxChooser.factory('dropboxChooserService', function(DROPBOX_CONFIG){
+dropboxChooserModule.factory('dropboxChooserService', function(DROPBOX_CONFIG){
 
   var Dropbox = {
     appKey: DROPBOX_CONFIG.API_KEY
@@ -153,12 +153,12 @@ dropboxChooser.factory('dropboxChooserService', function(DROPBOX_CONFIG){
 
 
  /**
-  * dropboxChooser run
+  * dropboxChooserModule run
   *
   * Initialize dropbox chooser by adding some css to the page and preparing an iframe for IE
   * @author Kevin Kirchner
   **/
-dropboxChooser.run( function(dropboxChooserService, DROPBOX_CONFIG) {
+dropboxChooserModule.run( function(dropboxChooserService, DROPBOX_CONFIG) {
 
   // Inject CSS
   var css = document.createElement("style");
@@ -190,12 +190,13 @@ dropboxChooser.run( function(dropboxChooserService, DROPBOX_CONFIG) {
 })
 
  /**
-  * dropboxChooser directive
+  * dropboxChooserModule directive
   *
   * a dropboxchooser element to use in your markup
+  * Use this markup: <dropbox-chooser local-model="yourLocalModel"></dropbox-chooser>
   * @author Kevin Kirchner
   **/
-dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
+dropboxChooserModule.directive('dropboxChooser', function (dropboxChooserService) {
   return {
     priority: 1,
     restrict:'E',
@@ -204,23 +205,24 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
     template:'<div class="dropbox-chooser"><input type="dropbox-chooser" name="selected-file" style="visibility: hidden;" ng-show="false" /></div>',
     controller: 'DropboxChooserCtrl',
     link: function postLink($scope, $element, $attrs) {
-      var el = $element.find('input')[0];
-      var btn = $element[0];
+      $scope.inputEl = $element.find('input')[0];
+      $scope.btnEl = $element[0];
 
       $element.click(function(){
         dropboxChooserService.choose({
           success: function(files) {
-            el.value = files[0].url;
+            $scope.files = files;
+            $scope.inputEl.value = $scope.files[0].url;
             // Send off success event
-            $scope.$emit('DbxChooserSuccess', $scope.localModel, files);
+            $scope.$emit('DbxChooserSuccess');
 
-            btn.className = "dropbox-chooser dropbox-chooser-used";
+            $scope.btnEl.className = "dropbox-chooser dropbox-chooser-used";
           },
           cancel: function() {
             // Send off cancel event
-            $scope.$emit('DbxChooserCancel', $scope.localModel);
+            $scope.$emit('DbxChooserCancel');
           },
-          linkType: el.getAttribute('data-link-type') ? el.getAttribute('data-link-type') : 'preview',
+          linkType: $scope.inputEl.getAttribute('data-link-type') ? $scope.inputEl.getAttribute('data-link-type') : 'preview',
           _trigger: 'button'  //log that this came from a button
 
         })
@@ -231,19 +233,25 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
 });
 
  /**
-  * dropboxChooser controller
+  * dropboxChooserModule controller
   *
   * a controller for the dropboxchooser directive
   * @author Kevin Kirchner
   **/
-dropboxChooser.controller('DropboxChooserCtrl', function($scope) {
-/*
-  $scope.$on('DbxChooserSuccess', function(event, localModel, files){
-    console.log($scope.files);
+dropboxChooserModule.controller('DropboxChooserCtrl', function($scope) {
+
+  $scope.$on('DbxChooserSuccess', function(event){
+    var localModel = event.targetScope.localModel;
+    var files = event.targetScope.files;
+    var fileUrl = files[0].url;
+    // update the local model with the files
+    localModel.fileUrl = fileUrl;
+    // then run $scope.$digest() to update it anywhere you have {{localModel.fileUrl}}
+    $scope.$digest();
   })
 
-  $scope.$on('DbxChooserCancel', function(event, localModel, files){
+  $scope.$on('DbxChooserCancel', function(event){
     console.log('fail');
   })
-*/
+
 });

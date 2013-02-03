@@ -14,12 +14,12 @@ Here's [Dropbox's documentation on the Dropbox Chooser](https://www.dropbox.com/
 
 ### How to Use
 
-1. Add `dropboxChooser` as a dependency for your angular app. Here's an example of how that might look:
+1. Add `dropboxChooserModule` as a dependency for your angular app. Here's an example of how that might look:
     
-        var myApp = angular.module('myApp', ['dropboxChooser'])
+        var myApp = angular.module('myApp', ['dropboxChooserModule'])
 
 
-2. Simply add `<dropboxchooser></dropboxchooser>` where you want the dropbox chooser link to show. This module will do the rest for you.
+2. Simply add `<dropbox-chooser local-model="myLocalModel"></dropbox-chooser>` where you want the dropbox chooser link to show. This module will do the rest for you.
 
 3. See [Documentation for Dropbox Chooser](https://www.dropbox.com/developers/chooser) for more details.
 
