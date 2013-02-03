@@ -200,7 +200,7 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
     priority: 1,
     restrict:'E',
     transclude:true,
-    scope: {},
+    scope: { localModel: '='},
     template:'<div class="dropbox-chooser"><input type="dropbox-chooser" name="selected-file" style="visibility: hidden;" ng-show="false" /></div>',
     controller: 'DropboxChooserCtrl',
     link: function postLink($scope, $element, $attrs) {
@@ -211,13 +211,14 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
         dropboxChooserService.choose({
           success: function(files) {
             el.value = files[0].url;
-            $scope.files = files;
-            $scope.$broadcast('DbxChooserSuccess');
+            // Send off success event
+            $scope.$emit('DbxChooserSuccess', $scope.localModel, files);
 
             btn.className = "dropbox-chooser dropbox-chooser-used";
           },
           cancel: function() {
-            $scope.$broadcast('DbxChooserCancel');
+            // Send off cancel event
+            $scope.$emit('DbxChooserCancel', $scope.localModel);
           },
           linkType: el.getAttribute('data-link-type') ? el.getAttribute('data-link-type') : 'preview',
           _trigger: 'button'  //log that this came from a button
@@ -236,12 +237,13 @@ dropboxChooser.directive('dropboxchooser', function (dropboxChooserService) {
   * @author Kevin Kirchner
   **/
 dropboxChooser.controller('DropboxChooserCtrl', function($scope) {
-  $scope.$on('DbxChooserSuccess', function(){
+/*
+  $scope.$on('DbxChooserSuccess', function(event, localModel, files){
     console.log($scope.files);
   })
 
-  $scope.$on('DbxChooserCancel', function(){
+  $scope.$on('DbxChooserCancel', function(event, localModel, files){
     console.log('fail');
   })
-
+*/
 });
