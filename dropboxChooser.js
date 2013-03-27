@@ -208,7 +208,7 @@ dropboxChooserModule.directive('dropboxChooser', function (dropboxChooserService
       $scope.inputEl = $element.find('input')[0];
       $scope.btnEl = $element[0];
 
-      $element.click(function(){
+      $element.bind("click", function(){
         dropboxChooserService.choose({
           success: function(files) {
             $scope.files = files;
