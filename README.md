@@ -1,6 +1,8 @@
 angular-dropbox
 ===============
 
+## This repository is no longer maintained
+
 Angular connection with Dropbox API; DropboxChooser Directive
 
 
